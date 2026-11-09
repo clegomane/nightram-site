@@ -1,6 +1,7 @@
 // Animated loops (docs/site-web.md, "Boucles animées"). Each loop tries media/NAME.webm then media/NAME.mp4 and is
 // shown only once its first frame has loaded, so a missing loop simply leaves the still image.
 // - <figure class="media" data-loop="NAME">: the video replaces the <img> when the figure nears the screen.
+//   Several names ("NEW OLD") are tried in order: a new loop can be dropped into media/ without touching the page.
 // - <element data-bg-loop="NAME"> (the hero): a background video fades in over the CSS still, loaded at once,
 //   skipped when the visitor asked to save data.
 // Off screen, loops pause; nothing plays when the visitor asked for reduced motion.
@@ -10,16 +11,19 @@
   if (!figures.length && !backgrounds.length) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const makeVideo = (name, onReady) => {
+  const makeVideo = (names, onReady) => {
     const video = document.createElement("video");
     Object.assign(video, { muted: true, loop: true, playsInline: true, autoplay: true, preload: "auto" });
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
-    for (const [ext, type] of [["webm", "video/webm"], ["mp4", "video/mp4"]]) {
-      const s = document.createElement("source");
-      s.src = `media/${name}.${ext}`;
-      s.type = type;
-      video.appendChild(s);
+    // The browser takes the first <source> that loads, so a missing file falls through to the next one.
+    for (const name of names.trim().split(/\s+/)) {
+      for (const [ext, type] of [["webm", "video/webm"], ["mp4", "video/mp4"]]) {
+        const s = document.createElement("source");
+        s.src = `media/${name}.${ext}`;
+        s.type = type;
+        video.appendChild(s);
+      }
     }
     video.addEventListener("loadeddata", () => { onReady(video); video.play().catch(() => {}); }, { once: true });
     return video;
