@@ -161,6 +161,22 @@ figure.media img, figure.media video {
 .parts-title { margin: 40px 0 0; font-family: "Teko", sans-serif; text-transform: uppercase; font-size: 1.4rem; color: var(--gold); letter-spacing: 0.04em; }
 .parts .tag { color: var(--ink); border-color: rgba(255, 63, 168, 0.4); }
 
+/* Damage section: a loop with the key points, then a strip of stills */
+.damage-hero { margin-top: 32px; align-items: start; }
+@media (min-width: 820px) { .damage-hero { grid-template-columns: 1.3fr 1fr; } }
+.damage-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.damage-points li { padding-left: 16px; border-left: 3px solid var(--pink); }
+.damage-points h3 { font-size: 1.35rem; margin: 0 0 2px; }
+.damage-points p { margin: 0; color: var(--ink-dim); font-size: 0.97rem; }
+.damage-grid { display: grid; gap: 20px; margin-top: 32px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .damage-grid { grid-template-columns: repeat(3, 1fr); } }
+.damage-grid figure { margin: 0; }
+.damage-grid img {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg-2);
+}
+.damage-grid figcaption { margin-top: 8px; color: var(--ink-dim); font-size: 0.9rem; }
+
 /* Hero background loop (media.js, data-bg-loop): sits over the still, under the gradient and the text */
 .hero-video {
   position: absolute; inset: 0; width: 100%; height: 100%;
